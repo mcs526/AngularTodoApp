@@ -1,17 +1,46 @@
 angular.module("todoListApp", [])
-.controller('mainCtrl', function($scope){
-  $scope.learningNgChange = function(){
-    console.log("The input changed!");
-    
-  };
+.controller('mainCtrl', function($scope, dataService){
+  
+  $scope.addTodo = function(){
+  	var todo = {name: "This is a new todo."};
+  	$scope.todos.push(todo);
+  }
 
-  $scope.todos = [
-  	{'name': 'clean the house'},
-  	{'name': 'water the plants'},
-  	{'name': 'do the laundry'},
-  	{'name': 'wash the dishes'},
-  	{'name': 'mop the floor'},
-  	{'name': 'pay the bills'}
-  ]
+  $scope.helloConsole = dataService.helloConsole;
 
+  dataService.getTodos(function(response){
+			console.log(response.data);
+			$scope.todos = response.data;
+		});
+
+  $scope.deleteTodo = function(todo, $index){
+  	dataService.deleteTodo(todo);
+  	$scope.todos.splice($index, 1);
+  }
+
+  $scope.saveTodo = function(todo){
+  	dataService.saveTodo(todo);
+  }
+})
+
+.service('dataService', function($http){
+
+	this.helloConsole = function(){
+		console.log("this is the helloConsole service!");
+	};
+
+	this.getTodos = function(callback){
+		$http.get('mock/todos.json')
+		.then(callback)
+	}
+
+	this.deleteTodo = function(todo){
+		console.log("The " + todo.name + " todo has been deleted!");
+		//other logic to remove entry from database, etc
+	}	
+
+	this.saveTodo = function(todo){
+		console.log("The " + todo.name + " todo has been saved!");
+		//other logic to save entry in database
+	}
 });
