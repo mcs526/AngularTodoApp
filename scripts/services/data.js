@@ -17,8 +17,8 @@ angular.module('todoListApp')
 		//other logic to remove entry from database, etc
 	}	
 
-	this.saveTodo = function(todo){
-		console.log("The " + todo.name + " todo has been saved!");
+	this.saveTodos = function(todos){
+		console.log(todos.length + " todos have been saved!");
 		//other logic to save entry in database
 	}
 });
